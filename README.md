@@ -1,87 +1,80 @@
-# Project Title
+# Proof of Concept Terraform
 
-One Paragraph of project description goes here
-
+Defining best practices and documentation.
+![alt text](https://globalpricing.com/wp-content/uploads/2022/01/Agile.png)
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+https://www.terraform.io/
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+Installation of terraform:
+https://learn.hashicorp.com/tutorials/terraform/install-cli
 
+Using Azure CLI on your local machine or on Web Console: 
+https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/azure_cli
+
+If using a CI/CD there is no need to install the items above.
+
+### Best Practices
+
+1. Implement GitOps practices. Git repo is the source of truth.
+2. Run terraform from a centralized location. Pipeline job/VM such as CircleCI. (By default, Terraform stores state locally in a file named terraform.tfstate. When working with Terraform in a team, use of a local file makes Terraform usage complicated because each user must make sure they always have the latest state data before running Terraform and make sure that nobody else runs Terraform at the same time.)
+3. Store the remote state on either AWS s3 or azure blob for team collaboration. 
+3. And add a required review for applying changes to prod, as two pair of eyes will catch more potential issues.
+https://www.runatlantis.io/
+4. Best practices are not needed if all we need are 3 EC2 instances or simple services.
+
+
+## Ideas and thoughts
+
+1. Sepearate Terraform With Multiple Environments such as development, stage, testing, and production. Different ways to do by using Terraform workspaces, folders, etc; https://www.codurance.com/publications/2020/04/28/terraform-with-multiple-environments
+2. Place to store our env variables? Hashicorp vault or Azure key vault.
+3. Break up your root modules into the following:
+Network (VPC + Subnets)
+Data Tier (Databases)
+App Tier (EC2 Instances, ECS Cluster, EKS Cluster, etc.)
+
+## Testing
+Basic Circle CI script for Terraform
+https://github.com/hashicorp/learn-terraform-circleci
+
+## Common commands 
+All common commands: 
+https://acloudguru.com/blog/engineering/the-ultimate-terraform-cheatsheet
+
+The terraform fmt command is used to rewrite Terraform configuration files to a canonical format and style. 
 ```
-Give examples
+terraform fmt
 ```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Running the tests
 
-Explain how to run the automated tests for this system
+Add unit tests?
 
-### Break down into end to end tests
+### Helpful resources
 
-Explain what these tests test and why
+Add docuemntation to our Terraform modules:
+https://github.com/terraform-docs/terraform-docs
 
-```
-Give an example
-```
+Terraform Module to define a consistent naming convention by (namespace, stage, name, [attributes])
+https://registry.terraform.io/search/modules?q=Cloud%20Posse
 
-### And coding style tests
+## Questions:
 
-Explain what these tests test and why
+1. Is there is a way to speed up your terraform script.
 
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [Terraform](https://www.terraform.io/) - IaC
+* [Markdown](https://www.markdownguide.org/) - Markdown
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Andy** 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* The Internet
