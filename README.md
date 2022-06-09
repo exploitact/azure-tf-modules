@@ -8,7 +8,7 @@ https://www.terraform.io/
 
 ### Prerequisites
 
-Installation of terraform:
+Installation of terraform:.
 https://learn.hashicorp.com/tutorials/terraform/install-cli
 
 Using Azure CLI on your local machine or on Web Console: 
