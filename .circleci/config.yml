@@ -6,21 +6,21 @@ workflows:
     jobs:
       - terraform/fmt:
           checkout: true
-          context: terraform
+          context: noice
       - terraform/validate:
           checkout: true
-          context: terraform
+          context: noice
           requires:
             - terraform/fmt
       - terraform/plan:
           checkout: true
-          context: terraform
+          context: noice
           persist-workspace: true
           requires:
             - terraform/validate
       - terraform/apply:
           attach-workspace: true
-          context: terraform
+          context: noice
           filters:
             branches:
               only: main
