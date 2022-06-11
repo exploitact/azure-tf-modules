@@ -4,6 +4,7 @@ orbs:
 jobs:
   single-job-lifecycle:
     executor: terraform/default
+    working_directory: ~/project2
     steps:
       - checkout
       - terraform/init:
@@ -23,3 +24,5 @@ workflows:
   single-job-lifecycle:
     jobs:
       - single-job-lifecycle
+
+
