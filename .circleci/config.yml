@@ -4,7 +4,6 @@ orbs:
 workflows:
   deploy_infrastructure:
     jobs:
-     working_directory: ~/hi
       - terraform/fmt:
           checkout: true
           context: noice
