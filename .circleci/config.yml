@@ -4,21 +4,20 @@ orbs:
 jobs:
   single-job-lifecycle:
     executor: terraform/default
-    working_directory: ~/project2
     steps:
       - checkout
       - terraform/init:
-          path: .
+          path: ~/project2
       - terraform/validate:
-          path: .
+          path: ~/project2
       - terraform/fmt:
-          path: .
+          path: ~/project2
       - terraform/plan:
-          path: .
+          path: ~/project2
       - terraform/apply:
-          path: .
+          path: ~/project2
       - terraform/destroy:
-          path: .
+          path: ~/project2
     working_directory: ~/src
 workflows:
   single-job-lifecycle:
