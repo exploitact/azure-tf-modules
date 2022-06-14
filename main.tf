@@ -43,7 +43,7 @@ module "azure-b2c-sample" {
 
 
 # Create an Azure API Management (APIM) - (Basic version)
-
+/*
 module "azure-apim" {
   source               = "./modules/azure-apim"
   name                 = var.name
@@ -54,3 +54,4 @@ module "azure-apim" {
   apim_sku_name        = "Developer_1"
  
 }
+*/
