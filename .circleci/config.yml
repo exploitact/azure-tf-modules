@@ -28,7 +28,7 @@ version: 2.1
 jobs:
   # Job one with a unique name
   say_hello:
-    working_directory: ~/project2
+    working_directory: ~/tmp/project
     docker:
      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
