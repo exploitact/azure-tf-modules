@@ -1,0 +1,6 @@
+.terraform
+terraform.tfstate
+terraform.tfstate.backup
+
+# terraform.tfvars
+# don't have this when running in prod. should be excluded but this is running locally should it should be fine 
