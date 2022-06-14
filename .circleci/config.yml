@@ -48,9 +48,6 @@ jobs:
           command: |
             ls -al
             echo '^^^The files in your repo^^^' 
- 
- jobs:
-  # Job one with a unique name
   wtf:
     working_directory: ~/tmp/project
     docker:
