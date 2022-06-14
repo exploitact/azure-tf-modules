@@ -1,3 +1,50 @@
+version: 2
+
+jobs:
+  plan-apply:
+    working_directory: /tmp/project
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - checkout
+      - run:
+          name: terraform init & plan
+          command: |
+            terraform init -input=false
+            terraform plan -out tfapply -var-file terraform.tfvars
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  apply:
+    docker:
+      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: terraform
+          command: |
+            terraform apply -auto-approve tfapply
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+
+workflows:
+  version: 2
+  plan_approve_apply:
+    jobs:
+      - plan-apply
+      - hold-apply:
+          type: approval
+          requires:
+            - plan-apply
+      - apply:
+          requires:
+            - hold-apply
 # version: 2.1
 
 # jobs:
@@ -23,50 +70,52 @@
 #       - say_hello
 #       - say_goodbye
     
-version: 2.1
+# version: 2.1
 
-jobs:
-  # Job one with a unique name
-  say_hello:
-    working_directory: ~/tmp/project
-    docker:
-     - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - checkout
-      - run:
-          name: The First Step TO A START
-          command: |
-            terraform init -input=false
-            terraform plan -out tfapply -var-file terraform.tfvars
-  # Job two with a unique name
-  say_goodbye:
-    docker:
-     - image: cimg/base:2022.05
-    steps:
-      - run:
-          name: The First Step TO A START
-          command: |
-            ls -al
-            echo '^^^The files in your repo^^^' 
-  wtf:
-    working_directory: ~/tmp/project
-    docker:
-     - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - checkout
-      - run:
-          name: random commands 
-          command: |
-            ip a 
+# jobs:
+#   # Job one with a unique name
+#   say_hello:
+#     working_directory: ~/tmp/project
+#     docker:
+#      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+#     steps:
+#       - checkout
+#       - run:
+#           name: The First Step TO A START
+#           command: |
+#             terraform init -input=false
+#             terraform plan -out tfapply -var-file terraform.tfvars
+#   # Job two with a unique name
+#   say_goodbye:
+#     docker:
+#      - image: cimg/base:2022.05
+#     steps:
+#       - run:
+#           name: The First Step TO A START
+#           command: |
+#             ls -al
+#             echo '^^^The files in your repo^^^' 
+#   wtf:
+#     working_directory: ~/tmp/project
+#     docker:
+#      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+#     steps:
+#       - checkout
+#       - run:
+#           name: random commands 
+#           command: |
+#             ip a 
             
-workflows:
-  # Name of workflow
-  hello_and_goodbye:
-    # List of jobs that will run
-    jobs:
-      - say_hello
-      - say_goodbye
-  part_and_part:
-    # List of jobs that will run 2222 
-    jobs:
-      - wtf
+# workflows:
+#   # Name of workflow
+#   hello_and_goodbye:
+#     # List of jobs that will run
+#     jobs:
+#       - say_hello
+#       - say_goodbye
+#   part_and_part:
+#     # List of jobs that will run 2222 
+#     jobs:
+#       - wtf
+
+
