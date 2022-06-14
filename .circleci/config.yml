@@ -32,6 +32,7 @@ jobs:
     docker:
      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
+      - checkout: 
       - run:
           name: The First Step TO A START
           command: |
