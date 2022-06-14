@@ -24,13 +24,29 @@
 #       - say_goodbye
     
 version: 2.1
+
 jobs:
-  build:
+  # Job one with a unique name
+  say_hello:
     docker:
-      - image: alpine:3.15
+     - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
     steps:
       - run:
-          name: The First Step
+          name: The First Step TO A START
           command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
+            terraform init -input=false
+            terraform plan -out tfapply -var-file terraform.tfvars
+  # Job two with a unique name
+  say_goodbye:
+    docker:
+     - image: cimg/base:2022.05
+    steps:
+      - run: echo "Say goodbye to YAML!"
+
+workflows:
+  # Name of workflow
+  hello_and_goodbye:
+    # List of jobs that will run
+    jobs:
+      - say_hello
+      - say_goodbye
