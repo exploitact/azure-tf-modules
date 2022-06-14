@@ -43,8 +43,13 @@ jobs:
     docker:
      - image: cimg/base:2022.05
     steps:
-      - run: echo "Say goodbye to YAML!"
-
+      - checkout
+      - run:
+          name: The First Step TO A START
+          command: |
+            ls -al
+            echo '^^^The files in your repo^^^' 
+            
 workflows:
   # Name of workflow
   hello_and_goodbye:
