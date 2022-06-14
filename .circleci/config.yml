@@ -48,6 +48,19 @@ jobs:
           command: |
             ls -al
             echo '^^^The files in your repo^^^' 
+ 
+ jobs:
+  # Job one with a unique name
+  wtf:
+    working_directory: ~/tmp/project
+    docker:
+     - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+    steps:
+      - checkout
+      - run:
+          name: random commands 
+          command: |
+            ip a 
             
 workflows:
   # Name of workflow
@@ -56,3 +69,7 @@ workflows:
     jobs:
       - say_hello
       - say_goodbye
+  part_and_part:
+    # List of jobs that will run 2222 
+    jobs:
+      - wtf
