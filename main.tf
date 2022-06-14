@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
 }
 
-
+/*
 # Sample code for running a docker container
 resource "azurerm_container_group" "rg" {
   name                = var.generic
@@ -37,3 +37,4 @@ resource "azurerm_container_group" "rg" {
   }
 }
 
+*/
