@@ -1,5 +1,5 @@
 # Kinda overkill for just one resource to make a module but it's good practice
-resource "azurerm_aadb2c_directory" "addb2c" {
+resource "azurerm_aadb2c_directory" "b2cactivead" {
   country_code            = "US"
   data_residency_location = "United States"
   display_name            = var.b2c_display_name
