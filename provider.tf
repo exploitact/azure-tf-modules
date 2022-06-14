@@ -13,3 +13,13 @@ terraform {
 provider "azurerm" {
   features {}
 }
+
+terraform {
+  cloud {
+    organization = "tech-with-andy"
+
+    workspaces {
+      name = "testingindev"
+    }
+  }
+}
