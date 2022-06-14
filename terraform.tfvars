@@ -3,8 +3,7 @@
 /* *.tfvars is just one way of defining values for your variables; 
 the others being environment variables, command line flags, interactively prompted for during an apply, and as input to a module.
 */
-resource_group_name = "containerapp"
 
-location = "West US 2"
-
-generic = "example"
+name         = "thisisnotdev"
+location     = "UK South"
+b2c_sku_name = "PremiumP1"
