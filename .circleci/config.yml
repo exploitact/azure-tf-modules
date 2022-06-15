@@ -46,7 +46,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*This is a text notification*",
+                      "text": "*Your terraform build has succeeded*",
                       "emoji": true
                     }
                   ]
@@ -54,6 +54,16 @@ jobs:
               ]
             }
           event: always
+  nani:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+- slack/notify:
+	  event: fail
+	  template: basic_fail_1
+- slack/notify:
+	  event: pass
+	  template: success_tagged_deploy_1 
 
 workflows:
   version: 2
@@ -64,6 +74,8 @@ workflows:
           context: slack-secrets
           requires:
             - plan-apply
+      - nani:
+          context: slack-secrets
       - hold-apply:
           type: approval
           requires:
