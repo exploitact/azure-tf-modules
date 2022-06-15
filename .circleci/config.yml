@@ -7,7 +7,6 @@ jobs:
     working_directory: ~/project
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-      - image: 'cimg/base:stable'
     steps:
       - checkout
       - run:
@@ -34,7 +33,7 @@ jobs:
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
-       - persist_to_workspace:
+      - persist_to_workspace:
           root: .
           paths:
             - .    
