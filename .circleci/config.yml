@@ -7,7 +7,6 @@ jobs:
     working_directory: ~/project
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-      - image: 'cimg/base:stable'
     steps:
       - checkout
       - run:
@@ -26,16 +25,21 @@ jobs:
           paths:
             - .
 
-  # nani:
-  #   docker:
-  #     - image: 'cimg/base:stable'
- 
-  #     - slack/notify:
-  #         event: fail
-  #         template: basic_fail_1
-  #     - slack/notify:
-  #         event: pass
-  #         template: success_tagged_deploy_1
+  nani:
+    docker:
+      - image: 'cimg/base:stable'
+      - run:
+          name: pass or fail
+          command: |
+            if test -f "tfapply"; then 
+                echo "it exists"
+            fi
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
      
 
   apply:
@@ -79,13 +83,11 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - plan-apply:
+      - plan-apply
+      - nani:
           context: slack-secrets
-  
-      # - nani:
-      #     context: slack-secrets
-      #     requires:
-      #       - plan-apply
+          requires:
+            - plan-apply
       - notify: 
           context: slack-secrets
           type: approval
