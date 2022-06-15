@@ -24,8 +24,7 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-   
-       - slack/notify:
+      - slack/notify:
           event: fail
           template: basic_fail_1
 
@@ -73,9 +72,7 @@ workflows:
       - plan-apply
       - nani:
           context: slack-secrets
-          requires:
-            - plan-apply
-
+  
       # - nani:
       #     context: slack-secrets
       #     requires:
