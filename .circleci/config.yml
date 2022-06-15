@@ -76,6 +76,8 @@ workflows:
             - plan-apply
       - nani:
           context: slack-secrets
+          requires:
+            - plan-apply
       - hold-apply:
           type: approval
           requires:
