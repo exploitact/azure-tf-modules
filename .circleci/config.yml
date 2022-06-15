@@ -15,6 +15,7 @@ jobs:
           command: |
             terraform init -input=false
             terraform plan -out tfapply -var-file terraform.tfvars
+            terraform validate
       - persist_to_workspace:
           root: .
           paths:
