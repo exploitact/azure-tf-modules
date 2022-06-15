@@ -1,6 +1,7 @@
 # Default circleci pipeline. 
 version: 2
-
+orbs:
+  slack: circleci/slack@4.9.3
 jobs:
   plan-apply:
     working_directory: ~/project
@@ -32,12 +33,35 @@ jobs:
           root: .
           paths:
             - .
+  notify:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*This is a text notification*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
 
 workflows:
   version: 2
   plan_approve_apply:
     jobs:
       - plan-apply
+      - notify:
+          context: slack-secrets
       - hold-apply:
           type: approval
           requires:
