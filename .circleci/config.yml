@@ -19,20 +19,20 @@ jobs:
           paths:
             - .
 
-  nani:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - run:
-          name: pass or fail
-          command: |
-            echo "hello world
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+  # nani:
+  #   docker:
+  #     - image: 'cimg/base:stable'
+  #   steps:
+  #     - run:
+  #         name: pass or fail
+  #         command: |
+  #           echo "hello world
+  #     - slack/notify:
+  #         event: fail
+  #         template: basic_fail_1
+  #     - slack/notify:
+  #         event: pass
+  #         template: success_tagged_deploy_1
      
 
   apply:
@@ -62,7 +62,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*Your terraform build has succeeded*",
+                      "text": "*Your terraform init/plan has succeeded*",
                       "emoji": true
                     }
                   ]
@@ -71,25 +71,73 @@ jobs:
             }
           event: always
 
+  notifyforapproval:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*Your terraform init/plan has been approval*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+ notifyforapply:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*Your terraform init/plan has been applied*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
 
 workflows:
   version: 2
   plan_approve_apply:
     jobs:
       - plan-apply
-      - nani:
-          context: slack-secrets
+      # - nani:
+      #     context: slack-secrets
 
       - notify: 
-          context: slack-secrets
-          type: approval
-          requires:
-            - plan-apply
+          context: slack-secrets    
       - hold-apply:
           type: approval
           requires:
             - plan-apply
+      - notifyforapproval:
+          context: slack-secrets 
+          requires:
+            - hold-apply
       - apply:
           requires:
             - hold-apply
+      - notifyforapply:
+          context: slack-secrets 
+          requires:
+            - apply
+
  
