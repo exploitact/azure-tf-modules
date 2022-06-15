@@ -97,7 +97,7 @@ module "azure-linux-function-app" {
   # Or you can just name it anything you want as long as terraform accepts it. Like, name = "nodejsfunctionapp"
   storage_account_name = var.name
   # var.name is just a default value that I defined in variables.tf and declared it as thisisaexample in terraform.tfvars.
-  function_resource_group = module.resource_group.rg_name_out var.name
+  function_resource_group = module.resource_group.rg_name_out
   function_location       = var.location
   # This is just a default value that I defined in variables.tf and declared it as thisisaexample in terraform.tfvars.
   function_account_tier = "Standard"
