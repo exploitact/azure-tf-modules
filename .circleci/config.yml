@@ -2,144 +2,170 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.9.3
-jobs:
-  plan-apply:
-    working_directory: ~/project
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - checkout
-      - run:
-          name: terraform init & plan
-          command: |
-            terraform init -input=false
-            terraform plan -out tfapply -var-file terraform.tfvars
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
+  terraform: circleci/terraform@3.1
+workflows:
+  deploy_infrastructure:
+    jobs:
+      - terraform/fmt:
+          checkout: true
+          context: terraform
+      - terraform/validate:
+          checkout: true
+          context: terraform
+          requires:
+            - terraform/fmt
+      - terraform/plan:
+          checkout: true
+          context: terraform
+          persist-workspace: true
+          requires:
+            - terraform/validate
+      - terraform/apply:
+          attach-workspace: true
+          context: terraform
+          filters:
+            branches:
+              only: main
+          requires:
+            - terraform/plan
+# jobs:
+#   plan-apply:
+#     working_directory: ~/project
+#     docker:
+#       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+#     steps:
+#       - checkout
+#       - run:
+#           name: terraform init & plan
+#           command: |
+#             terraform init -input=false
+#             terraform plan -out tfapply -var-file terraform.tfvars
+#       - persist_to_workspace:
+#           root: .
+#           paths:
+#             - .
 
-  # nani:
-  #   docker:
-  #     - image: 'cimg/base:stable'
-  #   steps:
-  #     - run:
-  #         name: pass or fail
-  #         command: |
-  #           echo "hello world
-  #     - slack/notify:
-  #         event: fail
-  #         template: basic_fail_1
-  #     - slack/notify:
-  #         event: pass
-  #         template: success_tagged_deploy_1
+#   # nani:
+#   #   docker:
+#   #     - image: 'cimg/base:stable'
+#   #   steps:
+#   #     - run:
+#   #         name: pass or fail
+#   #         command: |
+#   #           echo "hello world
+#   #     - slack/notify:
+#   #         event: fail
+#   #         template: basic_fail_1
+#   #     - slack/notify:
+#   #         event: pass
+#   #         template: success_tagged_deploy_1
      
 
-  apply:
-    docker:
-      - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: terraform
-          command: |
-            terraform apply -auto-approve tfapply
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-  notify:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - slack/notify:
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*Your terraform init/plan has succeeded*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
+#   apply:
+#     docker:
+#       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+#     steps:
+#       - attach_workspace:
+#           at: .
+#       - run:
+#           name: terraform
+#           command: |
+#             terraform apply -auto-approve tfapply
+#       - persist_to_workspace:
+#           root: .
+#           paths:
+#             - .
+#   notify:
+#     docker:
+#       - image: 'cimg/base:stable'
+#     steps:
+#       - slack/notify:
+#           custom: |
+#             {
+#               "blocks": [
+#                 {
+#                   "type": "section",
+#                   "fields": [
+#                     {
+#                       "type": "plain_text",
+#                       "text": "*Your terraform init/plan has succeeded*",
+#                       "emoji": true
+#                     }
+#                   ]
+#                 }
+#               ]
+#             }
+#           event: always
 
-  notifyforapproval:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - slack/notify:
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*Your terraform init/plan has been approved*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
-  notifyforapply:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
-      - slack/notify:
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*Your terraform init/plan has been applied*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
+#   notifyforapproval:
+#     docker:
+#       - image: 'cimg/base:stable'
+#     steps:
+#       - slack/notify:
+#           custom: |
+#             {
+#               "blocks": [
+#                 {
+#                   "type": "section",
+#                   "fields": [
+#                     {
+#                       "type": "plain_text",
+#                       "text": "*Your terraform init/plan has been approved*",
+#                       "emoji": true
+#                     }
+#                   ]
+#                 }
+#               ]
+#             }
+#           event: always
+#   notifyforapply:
+#     docker:
+#       - image: 'cimg/base:stable'
+#     steps:
+#       - slack/notify:
+#           custom: |
+#             {
+#               "blocks": [
+#                 {
+#                   "type": "section",
+#                   "fields": [
+#                     {
+#                       "type": "plain_text",
+#                       "text": "*Your terraform init/plan has been applied*",
+#                       "emoji": true
+#                     }
+#                   ]
+#                 }
+#               ]
+#             }
+#           event: always
 
-workflows:
-  version: 2
-  plan_approve_apply:
-    jobs:
-      - plan-apply
-      # - nani:
-      #     context: slack-secrets
+# workflows:
+#   version: 2
+#   plan_approve_apply:
+#     jobs:
+#       - plan-apply
+#       # - nani:
+#       #     context: slack-secrets
 
-      - notify: 
-          context: slack-secrets
-          requires:
-            - plan-apply    
-      - hold-apply:
-          type: approval
-          requires:
-            - plan-apply
-      - notifyforapproval:
-          context: slack-secrets 
-          requires:
-            - hold-apply
-      - apply:
-          requires:
-            - hold-apply
-      - notifyforapply:
-          context: slack-secrets 
-          requires:
-            - apply
+#       - notify: 
+#           context: slack-secrets
+#           requires:
+#             - plan-apply    
+#       - hold-apply:
+#           type: approval
+#           requires:
+#             - plan-apply
+#       - notifyforapproval:
+#           context: slack-secrets 
+#           requires:
+#             - hold-apply
+#       - apply:
+#           requires:
+#             - hold-apply
+#       - notifyforapply:
+#           context: slack-secrets 
+#           requires:
+#             - apply
 
  
