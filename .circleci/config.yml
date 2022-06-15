@@ -25,9 +25,7 @@ jobs:
       - run:
           name: pass or fail
           command: |
-            if test -f "tfapply"; then 
-                echo "it exists"
-            fi
+            echo "hello world"
       - slack/notify:
           event: fail
           template: basic_fail_1
