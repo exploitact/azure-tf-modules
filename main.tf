@@ -45,6 +45,11 @@ module "resource_group_example" {
   resource_location = var.location
 */
 
+module "resource_group_dfgdfge" {
+  source = "./modules/azure-resource-g"
+  resource_group_name = var.name
+  resource_location = var.location
+
 /*
 # Create an Azure B2C Directory. Doesn't work with CI/CD using a Service. 
 # Sadly at the moment you can only manage an existing b2c tenant.
