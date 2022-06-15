@@ -7,6 +7,7 @@ jobs:
     working_directory: ~/project
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
+      - image: 'cimg/base:stable'
     steps:
       - checkout
       - run:
@@ -18,9 +19,13 @@ jobs:
           root: .
           paths:
             - .
+      - run: echo "please work"
       - slack/notify:
           event: fail
-          template: basic_fail_1    
+          template: basic_fail_1   
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1  
 
   apply:
     docker:
@@ -69,8 +74,7 @@ workflows:
   version: 2
   plan_approve_apply:
     jobs:
-      - plan-apply:
-          context: slack-secrets
+      - plan-apply 
       - notify:
           context: slack-secrets
           requires:
