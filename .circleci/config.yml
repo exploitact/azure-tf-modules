@@ -4,7 +4,6 @@ orbs:
   slack: circleci/slack@4.9.3
 jobs:
   plan-apply:
-    context: slack-secrets
     working_directory: ~/project
     docker:
       - image: docker.mirror.hashicorp.services/hashicorp/terraform:light
@@ -71,6 +70,7 @@ workflows:
   plan_approve_apply:
     jobs:
       - plan-apply
+          context: slack-secrets
       - notify:
           context: slack-secrets
           requires:
