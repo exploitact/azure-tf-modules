@@ -24,9 +24,9 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - run: 
-          name: echo "hello world"
+          name: test command for fail
           command: |
-            terraform validate tfapply
+            echo "hello world"
       - slack/notify:
           event: fail
           template: basic_fail_1
