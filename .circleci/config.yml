@@ -18,10 +18,11 @@ jobs:
           root: .
           paths:
             - .
-
+            
   nani:
     docker:
       - image: 'cimg/base:stable'
+    steps:
       - run:
           name: pass or fail
           command: |
