@@ -18,7 +18,7 @@ jobs:
           root: .
           paths:
             - .
-            
+
   nani:
     docker:
       - image: 'cimg/base:stable'
@@ -26,7 +26,7 @@ jobs:
       - run:
           name: pass or fail
           command: |
-            echo "hello world"
+            echo "hello world
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -79,8 +79,7 @@ workflows:
       - plan-apply
       - nani:
           context: slack-secrets
-          requires:
-            - plan-apply
+
       - notify: 
           context: slack-secrets
           type: approval
