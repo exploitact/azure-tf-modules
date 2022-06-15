@@ -56,23 +56,8 @@ module "azure-b2c" {
   
 }
 */
+ 
 
-# Create an Azure API Management (APIM) - (Basic version) - takes like 40 minutes to get up and running
-module "azure-apim" {
-  source              = "./modules/azure-apim"
-  name                = var.name
-  apim_resource_group = module.resource_group.rg_name_out
-  /*
-  This uses the module resource_group which is the first module above. You use this code because you want to use the resource group
-  you define above. You can't just define a variable and list it here. It will result in an error. You have to use an exisiting 
-  resource group you made or someone else made.  
-  */
-  apim_location        = var.location
-  apim_publisher_name  = "My Company"
-  apim_publisher_email = "company@terraform.io"
-  apim_sku_name        = "Developer_1"
-
-}
 
 # No comments apim
 /*
