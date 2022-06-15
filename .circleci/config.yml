@@ -62,6 +62,8 @@ workflows:
       - plan-apply
       - notify:
           context: slack-secrets
+          requires:
+            - plan-apply
       - hold-apply:
           type: approval
           requires:
