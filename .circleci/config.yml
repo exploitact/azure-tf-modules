@@ -19,17 +19,14 @@ jobs:
           root: .
           paths:
             - .
-      - run: echo "please work"
+
+ nani:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
       - slack/notify:
-        environment: 
-          FOO: SLACK_ACCESS_TOKEN
-          event: fail
-          template: basic_fail_1   
-      - slack/notify:
-        environment: 
-          FOO: SLACK_ACCESS_TOKEN
           event: pass
-          template: success_tagged_deploy_1  
+          template: success_tagged_deploy_1 
 
   apply:
     docker:
@@ -66,7 +63,7 @@ jobs:
               ]
             }
           event: always
-  nani:
+  naniii:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -79,14 +76,11 @@ workflows:
   plan_approve_apply:
     jobs:
       - plan-apply 
-      - notify:
-          context: slack-secrets
-          requires:
-            - plan-apply
-      - nani:
-          context: slack-secrets
-          requires:
-            - plan-apply
+      - naniii 
+      # - nani:
+      #     context: slack-secrets
+      #     requires:
+      #       - plan-apply
       - hold-apply:
           type: approval
           requires:
