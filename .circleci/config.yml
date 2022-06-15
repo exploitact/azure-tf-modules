@@ -84,7 +84,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*Your terraform init/plan has been approval*",
+                      "text": "*Your terraform init/plan has been approved*",
                       "emoji": true
                     }
                   ]
