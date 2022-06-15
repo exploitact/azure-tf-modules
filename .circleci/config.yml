@@ -21,11 +21,13 @@ jobs:
             - .
       - run: echo "please work"
       - slack/notify:
-        environment: SLACK_ACCESS_TOKEN
+        environment: 
+          FOO: SLACK_ACCESS_TOKEN
           event: fail
           template: basic_fail_1   
       - slack/notify:
-        environment: SLACK_ACCESS_TOKEN
+        environment: 
+          FOO: SLACK_ACCESS_TOKEN
           event: pass
           template: success_tagged_deploy_1  
 
