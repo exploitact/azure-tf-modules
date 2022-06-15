@@ -73,7 +73,7 @@ workflows:
   plan_approve_apply:
     jobs:
       - plan-apply:
-      requires:
+          requires:
             - nani
       - nani:
           context: slack-secrets
