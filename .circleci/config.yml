@@ -20,6 +20,7 @@ jobs:
           paths:
             - .
       - slack/notify:
+          context: slack-secrets
           event: fail
           template: basic_fail_1
 
@@ -76,7 +77,6 @@ workflows:
   plan_approve_apply:
     jobs:
       - plan-apply:
-          context: slack-secrets
           requires:
             - nani
       - nani:
