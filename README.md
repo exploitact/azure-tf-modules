@@ -2,7 +2,7 @@
 
 Defining best practices and documentation.
 ![alt text](https://globalpricing.com/wp-content/uploads/2022/01/Agile.png)
-<img src="https://user-images.githubusercontent.com/link-to-your-image.png](https://cultofthepartyparrot.com/parrots/hd/parrot.gif)" width="200" />
+
 
 ## Getting Started
 
