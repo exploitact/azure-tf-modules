@@ -1,8 +1,8 @@
 # Proof of Concept Terraform
 
 Defining best practices and documentation.
-![alt text](https://globalpricing.com/wp-content/uploads/2022/01/Agile.png)
 
+![alt text](https://globalpricing.com/wp-content/uploads/2022/01/Agile.png)
 
 ## Getting Started
 
